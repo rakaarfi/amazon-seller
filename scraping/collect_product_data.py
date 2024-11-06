@@ -13,7 +13,7 @@ class ProductDataCollector:
 
     def collect_data_from_products(self, product_links):
         """Collect data from a list of product pages."""
-        for link in product_links[:5]:
+        for link in product_links:
             self.navigator.driver.get(link)
             try:
                 # Wait for the seller button to appear
