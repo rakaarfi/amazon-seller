@@ -10,7 +10,9 @@ class DriverSetup:
         options.add_argument('--start-maximized')
         options.add_argument('--ignore-certificate-errors')
         self.driver = webdriver.Chrome(options=options)
-        self.wait = WebDriverWait(self.driver, 20)
+        self.wait = WebDriverWait(self.driver, 20) 
+        # test purpose, 20 seems too long
+        self.wait = WebDriverWait(self.driver, 5) 
 
     def close(self):
         self.driver.quit()
