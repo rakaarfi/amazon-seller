@@ -17,3 +17,4 @@ class DriverSetup:
 
     def close(self):
         self.driver.quit()
+        

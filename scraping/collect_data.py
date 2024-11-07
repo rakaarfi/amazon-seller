@@ -28,3 +28,4 @@ class DataCollector:
     def save_to_excel(self, filename):
         df = pd.DataFrame(self.data)
         df.to_excel(filename, index=False)
+        

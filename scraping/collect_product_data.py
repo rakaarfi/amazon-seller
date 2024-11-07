@@ -19,7 +19,7 @@ class ProductDataCollector:
     def collect_data_from_products(self, product_links):
         """Collect data from a list of product pages."""
         length = len(product_links)
-        for idx, link in enumerate(product_links[:5]):
+        for idx, link in enumerate(product_links):
             self.driver.get(link)
             print(f'Extracting data {idx + 1} out of {length}...')
             try:
