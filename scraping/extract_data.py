@@ -4,16 +4,18 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
+from scraping.wait_driver import WaitDriver
+
 
 class DataExtractor:
     """Extract information from a given webpage."""
     def __init__(self, driver_setup):
-        self.driver = driver_setup.driver
-        self.wait = driver_setup.wait
+        self.driver = driver_setup
+        self.wait = WaitDriver(driver_setup).wait
 
     @staticmethod
-    def get_text(driver, selector_type, selector, fallback="Not Found"):
-        """Get text from an element safely with a fallback value."""
+    def get_text(driver, selector_type, selector):
+        """Get text from an element safely."""
         try:
             if selector_type == 'id':
                 element = driver.find_element(By.ID, selector)
@@ -24,9 +26,9 @@ class DataExtractor:
             else:
                 raise ValueError("Unsupported selector type")
             
-            return element.text.strip() if element else fallback
+            return element.text.strip() if element else "Not Found"
         except NoSuchElementException:
-            return fallback
+            return "Not Found"
 
     def get_seller_info(self):
         """Get seller information from the page."""
@@ -36,7 +38,7 @@ class DataExtractor:
 
         # Get the seller's ratings count
         rating_css = 'a.a-link-normal.feedback-detail-description.no-text-decoration'
-        rating_text = self.get_text(self.driver, 'css', rating_css, "No Rating Found")
+        rating_text = self.get_text(self.driver, 'css', rating_css)
         start = rating_text.find('(') + 1
         end = rating_text.find(')')
         ratings = rating_text[start:end] if start > 0 and end > start else "No Rating Found"

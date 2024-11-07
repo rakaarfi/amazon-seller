@@ -1,22 +1,22 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+from scraping.wait_driver import WaitDriver
+
 
 class PageNavigator:
     """Navigate to a given URL and interact with the page"""
     def __init__(self, driver_setup):
-        self.driver = driver_setup.driver
-        self.wait = driver_setup.wait
+        self.driver = driver_setup
+        self.wait = WaitDriver(driver_setup).wait
 
     def open_url(self, url):
         """
-        Navigate to a given URL and refresh the page 3 times to ensure
-        all elements are loaded.
+        Navigate to a given URL and refresh the page until the title is not "Sorry! Something went wrong!"
         """
         self.driver.get(url)
-        self.driver.refresh()
-        self.driver.refresh()
-        self.driver.refresh()
+        while self.driver.title == "Sorry! Something went wrong!":
+            self.driver.refresh()
 
     def wait_for_user_to_solve_captcha(self):
         print("Please solve the CAPTCHA manually and press Enter to continue...")
@@ -50,6 +50,4 @@ class PageNavigator:
             product_links.append(link)
 
         return product_links
-
-    def go_back(self):
-        self.driver.back()
+        

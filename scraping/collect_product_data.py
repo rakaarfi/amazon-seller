@@ -2,29 +2,33 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
+from scraping.setup_driver import DriverSetup
+from scraping.navigate_page import PageNavigator
+from scraping.extract_data import DataExtractor
+from scraping.collect_data import DataCollector
+
 
 class ProductDataCollector:
     """Collect data from a list of product pages."""
-    def __init__(self, navigator, extractor, collector, driver_setup):
-        self.navigator = navigator
-        self.extractor = extractor
-        self.collector = collector
-        self.wait = driver_setup.wait
+    def __init__(self):
+        self.driver = DriverSetup().driver
+        self.navigator = PageNavigator(self.driver)
+        self.extractor = DataExtractor(self.driver)
+        self.collector = DataCollector()
 
     def collect_data_from_products(self, product_links):
         """Collect data from a list of product pages."""
-        for link in product_links:
-            self.navigator.driver.get(link)
+        length = len(product_links)
+        for idx, link in enumerate(product_links[:5]):
+            self.driver.get(link)
+            print(f'Extracting data {idx + 1} out of {length}...')
             try:
-                # Wait for the seller button to appear
-                self.wait.until(EC.visibility_of_element_located(
-                    (By.CSS_SELECTOR, 'div#desktop_qualifiedBuyBox')))
-
-                # Wait to see if the seller button appears within the timeout
-                seller_button = self.wait.until(EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, "a#sellerProfileTriggerId")))
-                print('Found seller button')  # Only print this if seller button is indeed found
+                # Find the seller button
+                seller_button = self.driver.find_element(By.CSS_SELECTOR, "a#sellerProfileTriggerId")
+                
+                # Click the seller button if it exists
                 seller_button.click()
+                print(f'Found seller button.')  # Only print this if seller button is indeed found
 
                 seller_name, ratings, business_name, country, current_url = self.extractor.get_seller_info()
                 self.collector.add_seller_info(seller_name, ratings, business_name, country, current_url)
@@ -37,8 +41,6 @@ class ProductDataCollector:
                 }.items():
                     rating_count, star_percentage = self.extractor.get_rating_info(time_id, rating_id, star_id, period)
                     self.collector.add_rating_info(period, rating_count, star_percentage)
-                
-                self.navigator.go_back()
             except (NoSuchElementException, TimeoutException):
-                print("No seller button found or other error, skipping product.")
+                print(f"No seller button found, skipping product.")
                 continue

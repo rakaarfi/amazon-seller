@@ -2,6 +2,7 @@ import argparse
 
 from scraping.main_parsing import parsing
 
+
 def main():
     """
     Main function to handle command-line arguments and trigger the web scraping and data saving process.
