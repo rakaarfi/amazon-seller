@@ -14,9 +14,18 @@ class PageNavigator:
         all elements are loaded.
         """
         self.driver.get(url)
-        self.driver.refresh()
-        self.driver.refresh()
-        self.driver.refresh()
+
+        """
+        if Sorry! Something went wrong!
+
+        """
+
+        while self.driver.title == "Sorry! Something went wrong!":
+            self.driver.refresh()
+
+        # self.driver.refresh()
+        # self.driver.refresh()
+        # self.driver.refresh()
 
     def wait_for_user_to_solve_captcha(self):
         print("Please solve the CAPTCHA manually and press Enter to continue...")
@@ -53,3 +62,6 @@ class PageNavigator:
 
     def go_back(self):
         self.driver.back()
+        """
+        it seems unnecessary
+        """

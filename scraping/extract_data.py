@@ -12,7 +12,7 @@ class DataExtractor:
         self.wait = driver_setup.wait
 
     @staticmethod
-    def get_text(driver, selector_type, selector, fallback="Not Found"):
+    def get_text(driver, selector_type, selector, fallback="Not Found"): # fallback params is not necessary
         """Get text from an element safely with a fallback value."""
         try:
             if selector_type == 'id':
@@ -24,7 +24,7 @@ class DataExtractor:
             else:
                 raise ValueError("Unsupported selector type")
             
-            return element.text.strip() if element else fallback
+            return element.text.strip() if element else fallback # better to directly "Not Found"
         except NoSuchElementException:
             return fallback
 
