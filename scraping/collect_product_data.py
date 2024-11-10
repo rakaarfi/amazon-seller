@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementNotInteractableException
 
 from scraping.setup_driver import DriverSetup
 from scraping.navigate_page import PageNavigator
@@ -41,6 +40,6 @@ class ProductDataCollector:
                 }.items():
                     rating_count, star_percentage = self.extractor.get_rating_info(time_id, rating_id, star_id, period)
                     self.collector.add_rating_info(period, rating_count, star_percentage)
-            except (NoSuchElementException, TimeoutException):
+            except (NoSuchElementException, TimeoutException, ElementNotInteractableException):
                 print(f"No seller button found, skipping product.")
                 continue
