@@ -71,14 +71,15 @@ class DataExtractor:
                 time_button.click()
 
                 # Click on the time period button
-                period_button = self.wait.until(EC.element_to_be_clickable(
-                    (By.ID, time_period_button_id)))
+                period_button = self.wait.until(
+                    EC.element_to_be_clickable((By.ID, time_period_button_id)))
                 period_button.click()
 
                 # Retrieve the rating count
-                rating_count_wait = self.wait.until(EC.visibility_of_element_located(
-                    (By.ID, rating_num_id)))
-                rating_count = rating_count_wait.find_element(By.CLASS_NAME, 'ratings-reviews-count').text
+                rating_count_wait = self.wait.until(
+                    EC.visibility_of_element_located((By.ID, rating_num_id)))
+                rating_count = rating_count_wait.find_element(
+                    By.CLASS_NAME, 'ratings-reviews-count').text
 
                 # Retrieve the 5-star percentage
                 star_percentage = self.wait.until(EC.visibility_of_element_located(

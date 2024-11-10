@@ -25,9 +25,11 @@ class PageNavigator:
         submit_button.click()
 
     def search_product(self, search_query):
-        input_product = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="twotabsearchtextbox"]')))
+        input_product = self.wait.until(
+            EC.element_to_be_clickable((By.XPATH, '//*[@id="twotabsearchtextbox"]')))
         input_product.send_keys(search_query)
-        search_button = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="nav-search-submit-button"]')))
+        search_button = self.wait.until(
+            EC.element_to_be_clickable((By.XPATH, '//*[@id="nav-search-submit-button"]')))
         search_button.click()
 
     def get_product_links(self):
